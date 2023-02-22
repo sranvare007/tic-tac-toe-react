@@ -4,7 +4,7 @@ import BoardBtn from "./BoardBtn";
 import GameDrawnModal from "./GameDrawnModal";
 import WinnerModal from "./WinnerModal";
 
-export default function BoardComp() {
+export default function VsComp() {
   const [boardSelections, setBoardSelections] = useState([
     ["", "", ""],
     ["", "", ""],
@@ -123,6 +123,147 @@ export default function BoardComp() {
     }
   };
 
+  function checkForWinner(playerSymbol: string) {
+    for (let i = 0; i < 3; i++) {
+      if (
+        boardSelections[i][0] === playerSymbol &&
+        boardSelections[i][1] === playerSymbol &&
+        boardSelections[i][2] === playerSymbol
+      ) {
+        return playerSymbol;
+      }
+    }
+
+    for (let j = 0; j < 3; j++) {
+      if (
+        boardSelections[0][j] === playerSymbol &&
+        boardSelections[1][j] === playerSymbol &&
+        boardSelections[2][j] === playerSymbol
+      ) {
+        return playerSymbol;
+      }
+    }
+
+    if (
+      boardSelections[0][0] === playerSymbol &&
+      boardSelections[1][1] === playerSymbol &&
+      boardSelections[2][2] === playerSymbol
+    ) {
+      return playerSymbol;
+    }
+
+    if (
+      boardSelections[0][2] === playerSymbol &&
+      boardSelections[1][1] === playerSymbol &&
+      boardSelections[2][0] === playerSymbol
+    ) {
+      return playerSymbol;
+    }
+
+    return null;
+  }
+
+  const makeCompMove = () => {
+    // if (boardSelections[1][1] == "") {
+    //   const tempBoardSelections = [...boardSelections];
+    //   tempBoardSelections[1][1] = "O";
+    //   setBoardSelections(tempBoardSelections);
+    //   setActivePlayer(1);
+    // } else {
+    //   //   for (var rowArr of boardSelections) {
+    //   //     for (var ele of rowArr) {
+    //   //       console.log(ele);
+    //   //     }
+    //   //   }
+    //   const playerSelectedMoves = [];
+    //   boardSelections.map((item, row) => {
+    //     item.map((item, col) => {
+    //       if (item == "X") {
+    //         playerSelectedMoves.push([row, col]);
+    //       }
+    //     });
+    //   });
+    //   console.log(playerSelectedMoves);
+    //   let row = Math.floor(Math.random() * 3);
+    //   let col = Math.floor(Math.random() * 3);
+    //   while (boardSelections[row][col] != "") {
+    //     row = Math.floor(Math.random() * 3);
+    //     col = Math.floor(Math.random() * 3);
+    //   }
+    //   const tempBoardSelections = [...boardSelections];
+    //   tempBoardSelections[row][col] = "O";
+    //   setBoardSelections(tempBoardSelections);
+    //   setActivePlayer(1);
+    // }
+
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        if (boardSelections[i][j] === null) {
+          boardSelections[i][j] = "O";
+          if (checkForWinner("O") === "O") {
+            const tempBoardSelections = [...boardSelections];
+            setBoardSelections(tempBoardSelections);
+            setActivePlayer(1);
+            return boardSelections;
+          }
+          boardSelections[i][j] = "";
+        }
+      }
+    }
+
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        if (boardSelections[i][j] === "") {
+          boardSelections[i][j] = "X";
+          if (checkForWinner("X") === "X") {
+            boardSelections[i][j] = "O";
+            const tempBoardSelections = [...boardSelections];
+            setBoardSelections(tempBoardSelections);
+            setActivePlayer(1);
+            return boardSelections;
+          }
+          boardSelections[i][j] = "";
+        }
+      }
+    }
+
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        if (boardSelections[i][j] === "") {
+          boardSelections[i][j] = "O";
+          const tempBoardSelections = [...boardSelections];
+          setBoardSelections(tempBoardSelections);
+          setActivePlayer(1);
+          return boardSelections;
+        }
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (activePlayer == 2 && !isGameComplete && !gameDrawn) {
+      setTimeout(() => {
+        // const row = Math.floor(Math.random() * 3);
+        // const col = Math.floor(Math.random() * 3);
+        // const tempBoardSelections = [...boardSelections];
+        // tempBoardSelections[row][col] = "O";
+        // setBoardSelections(tempBoardSelections);
+        // setActivePlayer(1);
+        setTimeout(() => {
+          makeCompMove();
+        }, 500);
+        const gameResult = gameCompleted();
+        if (gameResult?.gameOver && !gameResult.gameDrawn) {
+          setWinnerPlayer(activePlayer);
+          setIsGameComplete(true);
+        } else if (gameResult?.gameOver && gameResult.gameDrawn) {
+          setGameDrawn(true);
+          setIsGameComplete(true);
+        }
+      }, 1000);
+    }
+  }, [activePlayer]);
+
   const onPlayerMove = (item: string, row: number, col: number) => {
     if (item == "" && !isGameComplete) {
       const tempBoardSelections = [...boardSelections];
@@ -183,7 +324,7 @@ export default function BoardComp() {
       </div>
       {winnerPlayer != -1 && (
         <WinnerModal
-          playerWon={activePlayer == 1 ? "Player 2" : "Player 1"}
+          playerWon={activePlayer == 2 ? "You" : "Computer"}
           resetGame={resetGame}
           closeModal={closeModal}
         />

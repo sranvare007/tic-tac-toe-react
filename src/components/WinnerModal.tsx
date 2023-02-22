@@ -50,7 +50,7 @@ export default function WinnerModal({
       }}
     >
       <div
-        className={`w-1/3 h-2/3 bg-white rounded-md relative flex flex-row justify-center items-center`}
+        className={`w-1/3 h-2/3 bg-white rounded-md relative flex flex-row justify-center items-center px-6`}
       >
         <div
           className={`absolute top-0 left-0 right-0 bottom-0`}
@@ -60,7 +60,7 @@ export default function WinnerModal({
           <div className={`w-32 h-32`} ref={trophyRef}></div>
           <p className={`font-bold text-6xl font-serif mt-4`}>Congrats!</p>
           <p className={`font-semibold text-3xl font-mono mt-10 text-center`}>
-            Player {playerWon} has won the game
+            {playerWon} won the game
           </p>
           <div
             className={`flex flex-row w-full justify-center items-center bg-blue-300 py-4 rounded-md mt-6 cursor-pointer z-10`}
