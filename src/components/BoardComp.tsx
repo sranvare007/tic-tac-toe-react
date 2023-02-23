@@ -174,7 +174,7 @@ export default function BoardComp() {
         </div>
         {!isGameComplete && (
           <div
-            className={`w-48 h-4w-48 ${
+            className={`w-48 h-48 ${
               activePlayer == 2 ? "opacity-100" : "opacity-0"
             }`}
             ref={player2Ref}

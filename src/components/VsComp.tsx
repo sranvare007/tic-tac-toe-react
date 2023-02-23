@@ -164,38 +164,6 @@ export default function VsComp() {
   }
 
   const makeCompMove = () => {
-    // if (boardSelections[1][1] == "") {
-    //   const tempBoardSelections = [...boardSelections];
-    //   tempBoardSelections[1][1] = "O";
-    //   setBoardSelections(tempBoardSelections);
-    //   setActivePlayer(1);
-    // } else {
-    //   //   for (var rowArr of boardSelections) {
-    //   //     for (var ele of rowArr) {
-    //   //       console.log(ele);
-    //   //     }
-    //   //   }
-    //   const playerSelectedMoves = [];
-    //   boardSelections.map((item, row) => {
-    //     item.map((item, col) => {
-    //       if (item == "X") {
-    //         playerSelectedMoves.push([row, col]);
-    //       }
-    //     });
-    //   });
-    //   console.log(playerSelectedMoves);
-    //   let row = Math.floor(Math.random() * 3);
-    //   let col = Math.floor(Math.random() * 3);
-    //   while (boardSelections[row][col] != "") {
-    //     row = Math.floor(Math.random() * 3);
-    //     col = Math.floor(Math.random() * 3);
-    //   }
-    //   const tempBoardSelections = [...boardSelections];
-    //   tempBoardSelections[row][col] = "O";
-    //   setBoardSelections(tempBoardSelections);
-    //   setActivePlayer(1);
-    // }
-
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
         if (boardSelections[i][j] === null) {
@@ -204,6 +172,14 @@ export default function VsComp() {
             const tempBoardSelections = [...boardSelections];
             setBoardSelections(tempBoardSelections);
             setActivePlayer(1);
+            const gameResult = gameCompleted();
+            if (gameResult?.gameOver && !gameResult.gameDrawn) {
+              setWinnerPlayer(activePlayer);
+              setIsGameComplete(true);
+            } else if (gameResult?.gameOver && gameResult.gameDrawn) {
+              setGameDrawn(true);
+              setIsGameComplete(true);
+            }
             return boardSelections;
           }
           boardSelections[i][j] = "";
@@ -220,6 +196,14 @@ export default function VsComp() {
             const tempBoardSelections = [...boardSelections];
             setBoardSelections(tempBoardSelections);
             setActivePlayer(1);
+            const gameResult = gameCompleted();
+            if (gameResult?.gameOver && !gameResult.gameDrawn) {
+              setWinnerPlayer(activePlayer);
+              setIsGameComplete(true);
+            } else if (gameResult?.gameOver && gameResult.gameDrawn) {
+              setGameDrawn(true);
+              setIsGameComplete(true);
+            }
             return boardSelections;
           }
           boardSelections[i][j] = "";
@@ -234,6 +218,14 @@ export default function VsComp() {
           const tempBoardSelections = [...boardSelections];
           setBoardSelections(tempBoardSelections);
           setActivePlayer(1);
+          const gameResult = gameCompleted();
+          if (gameResult?.gameOver && !gameResult.gameDrawn) {
+            setWinnerPlayer(activePlayer);
+            setIsGameComplete(true);
+          } else if (gameResult?.gameOver && gameResult.gameDrawn) {
+            setGameDrawn(true);
+            setIsGameComplete(true);
+          }
           return boardSelections;
         }
       }
@@ -243,12 +235,6 @@ export default function VsComp() {
   useEffect(() => {
     if (activePlayer == 2 && !isGameComplete && !gameDrawn) {
       setTimeout(() => {
-        // const row = Math.floor(Math.random() * 3);
-        // const col = Math.floor(Math.random() * 3);
-        // const tempBoardSelections = [...boardSelections];
-        // tempBoardSelections[row][col] = "O";
-        // setBoardSelections(tempBoardSelections);
-        // setActivePlayer(1);
         setTimeout(() => {
           makeCompMove();
         }, 500);
@@ -288,7 +274,7 @@ export default function VsComp() {
       <div className={`flex flex-row w-full justify-center items-center`}>
         {!isGameComplete && (
           <div
-            className={`w-48 h-4w-48 ${
+            className={`w-48 h-48 ${
               activePlayer == 1 ? "opacity-100" : "opacity-0"
             }`}
             ref={player1Ref}
